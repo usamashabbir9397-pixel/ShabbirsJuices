@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shabbir's Fruit — Fresh Natural Juices</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* COLOR SCHEME OPTIONS */
+        :root {
+            --primary: #FF9900;       /* Juicy Mango (Default) */
+            --secondary: #53A653;     /* Lush Lime */
+            --accent: #FFD933;        /* Sunrise Yellow */
+            --light: #FAFAFA;         /* Creamy White */
+            --dark: #2A4B3F;          /* Deep Forest */
+            --text: #333333;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Theme selector */
+        .theme-selector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            box-shadow: 0 4px 12px var(--shadow);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .theme-color {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.3s;
+        }
+        
+        .theme-color:hover {
+            transform: scale(1.1);
+        }
+        
+        .theme-color.active {
+            border-color: var(--dark);
+        }
+        
+        .theme-1 { background: #FF9900; } /* Mango */
+        .theme-2 { background: #E91E63; } /* Berry */
+        .theme-3 { background: #2196F3; } /* Blueberry */
+        .theme-4 { background: #9C27B0; } /* Grape */
+        .theme-5 { background: #4CAF50; } /* Green */
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 60px 0;
+        }
+        
+        /* Header */
+        header {
+            position: relative;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4)), 
+                        url('https://i.pinimg.com/1200x/8f/05/e6/8f05e66d8956e108bcbd7346d7b17393.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: zoomEffect 20s infinite alternate;
+        }
+        
+        @keyframes zoomEffect {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.05); }
+        }
+        
+        .hero-content {
+            position: relative;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            max-width: 800px;
+            z-index: 10;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 10px;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn:hover {
+            background-color: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            border-color: var(--secondary);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border-color: white;
+        }
+        
+        /* Section titles */
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+        
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        /* Drinks Grid */
+        .drinks-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .drink-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .drink-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .drink-img {
+            height: 220px;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .drink-content {
+            padding: 25px;
+        }
+        
+        .drink-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        
+        .drink-content p {
+            color: #666;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+        
+        .price {
+            font-size: 1.8rem;
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        
+        .order-btn {
+            display: block;
+            width: 100%;
+            text-align: center;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .order-btn:hover {
+            background-color: var(--dark);
+        }
+        
+        /* Benefits section */
+        .benefits {
+            background-color: #f9f9f9;
+        }
+        
+        .benefits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+        
+        .benefit-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .benefit-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .benefit-card h4 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+        
+        /* Order section */
+        .order-section {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+        }
+        
+        .order-section .section-title h2 {
+            color: white;
+        }
+        
+        .order-section .section-title h2:after {
+            background-color: white;
+        }
+        
+        .order-section .section-title p {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .order-options {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .order-option {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .order-option h3 {
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+        
+        .footer-section p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+        }
+        
+        .contact-info {
+            list-style: none;
+        }
+        
+        .contact-info li {
+            margin-bottom: 15px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .contact-info i {
+            color: var(--primary);
+            margin-right: 10px;
+            width: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        /* Floating WhatsApp */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 70px;
+            height: 70px;
+            background-color: #25D366;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.6);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .drinks-container {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .order-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .theme-selector {
+                top: 10px;
+                right: 10px;
+                padding: 5px;
+            }
+            
+            .theme-color {
+                width: 25px;
+                height: 25px;
+            }
+        }
+        
+        /* Order modal */
+        .order-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: var(--dark);
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+        <div class="theme-color theme-1 active" data-theme="1"></div>
+        <div class="theme-color theme-2" data-theme="2"></div>
+        <div class="theme-color theme-3" data-theme="3"></div>
+        <div class="theme-color theme-4" data-theme="4"></div>
+        <div class="theme-color theme-5" data-theme="5"></div>
+    </div>
+    
+    <!-- Header/Hero Section -->
+    <header>
+       <div class="hero-bg"></div>
+<div class="hero-content">
+
+    <img src="./shabbir fruit pics/LOGO1.jpg" alt="Shabbir's Fruits Logo" width="100">
+
+    <h1>Shabbir's Fruits</h1>
+    <p>Experience the freshness of nature in every sip. Our juices are made from the finest seasonal fruits, prepared fresh daily.</p>
+
+    <div class="hero-buttons">
+        <a href="#menu" class="btn">View Our Menu</a>
+        <a href="#order" class="btn btn-outline">Order Now</a>
+    </div>
+
+</div>
+    </header>
+    
+    <!-- Menu Section -->
+    <section id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Fresh Juices</h2>
+                <p>All our juices are made from fresh, seasonal fruits with no added preservatives or artificial flavors.</p>
+            </div>
+            
+            <div class="drinks-container">
+                <!-- Drink 1 -->
+                <div class="drink-card">
+                    <img src="./shabbir fruit pics/apple juice.avif" alt="Apple Juice" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Apple Juice</h3>
+                        <p>Freshly squeezed from crisp, sweet apples. Rich in antioxidants and vitamins.</p>
+                        <div class="price">Rs 200</div>
+                        <a href="#" class="order-btn" data-drink="Apple Juice" data-price="300">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Drink 2 -->
+                <div class="drink-card">
+                    <img src="./shabbir fruit pics/mango shake.avif" alt="Mango Juice" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Mango Shake</h3>
+                        <p>Sweet and tropical mango puree. A taste of summer in every glass.</p>
+                        <div class="price">Rs 200</div>
+                        <a href="#" class="order-btn" data-drink="Mango Juice" data-price="350">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Drink 3 -->
+                <div class="drink-card">
+                    <img src="https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Orange Juice" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Orange Juice</h3>
+                        <p>Freshly squeezed oranges packed with vitamin C. Tangy and refreshing.</p>
+                        <div class="price">Rs 250</div>
+                        <a href="#" class="order-btn" data-drink="Orange Juice" data-price="280">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Drink 4 -->
+                <div class="drink-card">
+                    <img src="./shabbir fruit pics/banana shake.avif" alt="Banana Shake" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Banana Shake</h3>
+                        <p>Creamy blend of ripe bananas and milk. A nutritious and filling drink.</p>
+                        <div class="price">Rs 200</div>
+                        <a href="#" class="order-btn" data-drink="Banana Shake" data-price="250">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Drink 5 -->
+                <div class="drink-card">
+                    <img src="./shabbir fruit pics/strawberry.avif" alt="Strawberry Juice" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Strawberry Shake</h3>
+                        <p>Sweet and slightly tart strawberry blend. Bursting with antioxidants.</p>
+                        <div class="price">Rs 200</div>
+                        <a href="#" class="order-btn" data-drink="Strawberry Juice" data-price="400">Order Now</a>
+                    </div>
+                </div>
+                
+                <!-- Drink 6 -->
+                <div class="drink-card">
+                    <img src="./shabbir fruit pics/special.avif" alt="Grapes Juice" class="drink-img">
+                    <div class="drink-content">
+                        <h3>Shabbir's Special </h3>
+                        <p>Sweet and refreshing juice/Shake. Rich in antioxidants and heart-healthy.</p>
+                        <div class="price">Rs 300</div>
+                        <a href="#" class="order-btn" data-drink="Grapes Juice" data-price="320">Order Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Benefits Section -->
+    <section class="benefits">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose Our Juices?</h2>
+                <p>We're committed to providing the healthiest and most delicious beverages</p>
+            </div>
+            
+            <div class="benefits-container">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h4>100% Natural</h4>
+                    <p>Only fresh fruits and vegetables. No artificial colors, flavors, or preservatives.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>Freshly Prepared</h4>
+                    <p>Made to order for maximum freshness, flavor, and nutritional value.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h4>Healthy & Nutritious</h4>
+                    <p>Packed with vitamins, minerals, and antioxidants to boost your health.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Order Section -->
+    <section id="order" class="order-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Order Your Fresh Juice</h2>
+                <p>Choose your preferred method to place an order</p>
+            </div>
+            
+            <div class="order-options">
+                <div class="order-option">
+                    <h3><i class="fab fa-whatsapp"></i> WhatsApp</h3>
+                    <p>Quick and easy ordering via WhatsApp. Send us your order details.</p>
+                    <a href="https://wa.me/923466985326?text=Hi%20I%20want%20to%20order%20juice%20from%20Shabbirs%20Garden" class="btn" target="_blank">
+                    <i class="fa-brands fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+                
+                <div class="order-option">
+                    <h3><i class="fas fa-phone"></i> Call Us</h3>
+                    <p>Speak directly with our team to place your order.</p>
+                    <a href="tel:+923429500010" class="btn btn-secondary">Call Now</a>
+                </div>
+                
+                <div class="order-option">
+                    <h3><i class="fas fa-store"></i> Visit Us</h3>
+                    <p>Visit our juice corner for the freshest experience.</p>
+                    <a href="#location" class="btn btn-outline">View Location</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Shabbir's Fruits</h3>
+                    <p>Fresh juices made from the finest ingredients. Your health is our priority.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://www.tiktok.com/@yourpage" target="_blank"><i class="fab fa-tiktok"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> Fawara Chowk, Peoles Colony No. 2, Faisalabad</li>
+                        <li><i class="fas fa-phone"></i> +92 342 9500010</li>
+                        <li><i class="fas fa-clock"></i> Open: 11:00 AM - 11:00 PM Daily</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section" id="location">
+                    <h3>Location</h3>
+                    <p>Find us at our juice corner in the heart of the city. We're easy to spot with our fresh fruit displays!</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2026 Shabbir's Fruit. All rights reserved. | Fresh Juices & Healthy Drinks</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Order Modal -->
+    <div id="orderModal" class="order-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Order <span id="modalDrinkName"></span></h3>
+            <form id="orderForm">
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <select id="quantity" required>
+                        <option value="1">1 Glass</option>
+                        <option value="2">2 Glasses</option>
+                        <option value="3">3 Glasses</option>
+                        <option value="4">4 Glasses</option>
+                        <option value="5">5 Glasses</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="instructions">Special Instructions (Optional)</label>
+                    <textarea id="instructions" placeholder="E.g., less sugar, extra ice, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn" style="width: 100%;">Place Order via WhatsApp</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/923466985326?text=Hi! I want to order juice from Shabbir's Fruit" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <script>
+        // Theme selector functionality
+        document.querySelectorAll('.theme-color').forEach(color => {
+            color.addEventListener('click', function() {
+                const theme = this.getAttribute('data-theme');
+                document.querySelectorAll('.theme-color').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Change CSS variables based on selected theme
+                const root = document.documentElement;
+                
+                switch(theme) {
+                    case '1': // Mango (Default)
+                        root.style.setProperty('--primary', '#FF9900');
+                        root.style.setProperty('--secondary', '#53A653');
+                        root.style.setProperty('--accent', '#FFD933');
+                        break;
+                    case '2': // Berry
+                        root.style.setProperty('--primary', '#E91E63');
+                        root.style.setProperty('--secondary', '#9C27B0');
+                        root.style.setProperty('--accent', '#FF4081');
+                        break;
+                    case '3': // Blueberry
+                        root.style.setProperty('--primary', '#2196F3');
+                        root.style.setProperty('--secondary', '#03A9F4');
+                        root.style.setProperty('--accent', '#00BCD4');
+                        break;
+                    case '4': // Grape
+                        root.style.setProperty('--primary', '#9C27B0');
+                        root.style.setProperty('--secondary', '#673AB7');
+                        root.style.setProperty('--accent', '#E040FB');
+                        break;
+                    case '5': // Green
+                        root.style.setProperty('--primary', '#4CAF50');
+                        root.style.setProperty('--secondary', '#8BC34A');
+                        root.style.setProperty('--accent', '#CDDC39');
+                        break;
+                }
+            });
+        });
+        
+        // Order modal functionality
+        const orderButtons = document.querySelectorAll('.order-btn');
+        const orderModal = document.getElementById('orderModal');
+        const closeModal = document.querySelector('.close-modal');
+        const modalDrinkName = document.getElementById('modalDrinkName');
+        const orderForm = document.getElementById('orderForm');
+        
+        orderButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const drinkName = this.getAttribute('data-drink');
+                const drinkPrice = this.getAttribute('data-price');
+                
+                modalDrinkName.textContent = drinkName;
+                orderModal.style.display = 'flex';
+                
+                // Store drink info in form for submission
+                document.querySelector('#orderForm').setAttribute('data-drink', drinkName);
+                document.querySelector('#orderForm').setAttribute('data-price', drinkPrice);
+            });
+        });
+        
+        closeModal.addEventListener('click', function() {
+            orderModal.style.display = 'none';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === orderModal) {
+                orderModal.style.display = 'none';
+            }
+        });
+        
+        // Form submission for WhatsApp order
+        orderForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const drinkName = this.getAttribute('data-drink');
+            const drinkPrice = this.getAttribute('data-price');
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const quantity = document.getElementById('quantity').value;
+            const instructions = document.getElementById('instructions').value;
+            
+            // Calculate total
+            const totalPrice = parseInt(drinkPrice) * parseInt(quantity);
+            
+            // Create WhatsApp message
+            let message = `Hi! I want to order from Shabbir's Garden:\n`;
+            message += `*Drink:* ${drinkName}\n`;
+            message += `*Quantity:* ${quantity}\n`;
+            message += `*Total:* Rs ${totalPrice}\n`;
+            message += `*Name:* ${name}\n`;
+            message += `*Phone:* ${phone}\n`;
+            
+            if (instructions) {
+                message += `*Special Instructions:* ${instructions}\n`;
+            }
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Open WhatsApp with pre-filled message
+            window.open(`https://wa.me/923001234567?text=${encodedMessage}`, '_blank');
+            
+            // Close modal and reset form
+            orderModal.style.display = 'none';
+            orderForm.reset();
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if(targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if(targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
